@@ -9,7 +9,8 @@ _Helper for presenting UIAlertController with an image 🌠._
 
 Helper object for presenting iOS alerts with an image.
 
-<img src="https://raw.githubusercontent.com/longhorn499/ImageAlertPresenter/master/Screenshots/screenshot.png"/>
+<img src="https://raw.githubusercontent.com/longhorn499/ImageAlertPresenter/master/Screenshots/screenshot.png" height = 
+"646"/>
 
 ## Installation
 
