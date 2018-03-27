@@ -1,6 +1,6 @@
 # ImageAlertPresenter
 
-_Helper for presenting UIAlertController with an image 🌠_
+_Present UIAlertController with a configurable image :stars:_
 
 ![Platform iOS](https://img.shields.io/badge/platform-iOS-blue.svg)
 [![MIT license](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/longhorn499/ActivityNavigationItem/raw/master/LICENSE.md)
