@@ -1,13 +1,13 @@
 # ImageAlertPresenter
 
-_Present UIAlertController with a configurable image :stars:_
+_Present UIAlertController with an image :stars:_
 
 ![Platform iOS](https://img.shields.io/badge/platform-iOS-blue.svg)
 [![MIT license](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/longhorn499/ActivityNavigationItem/raw/master/LICENSE.md)
 
 ## Description
 
-Helper object for presenting iOS alerts with an image.
+Present iOS alert with a configurable image. Use as is or as a starting point for your custom image alert.
 
 <img src="https://raw.githubusercontent.com/longhorn499/ImageAlertPresenter/master/Screenshots/screenshot.png" height = 
 "646"/>
@@ -19,7 +19,7 @@ Manually import the files from the Source folder.
 
 ## Usage
 
-Initialize and present:
+Initialize and present from view controller:
 
 ``` swift
 let imageAlert = ImageAlertPresenter.init(root: self, image: #imageLiteral(resourceName: "yourImage"))
