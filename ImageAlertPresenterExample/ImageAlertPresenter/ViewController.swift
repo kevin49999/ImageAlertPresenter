@@ -13,11 +13,8 @@ class ViewController: UIViewController {
     // MARK: - IBAction
     
     @IBAction func tapPresent(_ sender: UIButton) {
-        let imageAlert = ImageAlertPresenter.init(root: self, image: #imageLiteral(resourceName: "beach"))
+        let imageAlert = ImageAlertPresenter.init(root: self, image: #imageLiteral(resourceName: "beach"), config: ImageAlertPresenterConfig(title: "Title", message: "Message"))
         imageAlert.delegate = self
-        
-        imageAlert.config.completeTitle = "Send Image"
-        
         imageAlert.present()
     }
 }
@@ -25,10 +22,6 @@ class ViewController: UIViewController {
 // MARK: - ImageAlertPresenterDelegate
 
 extension ViewController: ImageAlertPresenterDelegate {
-    func canceled() {
-        print("Canceled")
-    }
-    
     func completed() {
         print("Completed")
     }
