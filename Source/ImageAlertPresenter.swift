@@ -9,7 +9,6 @@
 import UIKit
 
 protocol ImageAlertPresenterDelegate: class {
-    func canceled()
     func completed()
 }
 
@@ -19,8 +18,8 @@ class ImageAlertPresenter: NSObject {
     
     weak public var image: UIImage!
     weak public var delegate: ImageAlertPresenterDelegate?
-    private weak var root: UIViewController!
     public var config: ImageAlertPresenterConfig!
+    private weak var root: UIViewController!
     
     // MARK: - Init
     
@@ -38,65 +37,100 @@ class ImageAlertPresenter: NSObject {
     // MARK: - Present
     
     public func present() {
-        let ac = UIAlertController.init(title: nil, message: "remove", preferredStyle: .alert) // Add message or will be missing 1pt line above the bottom action buttons
-        
-        let cancel = UIAlertAction.init(title: config.cancelTitle, style: .destructive) { _ in
-            self.delegate?.canceled()
-        }
-        ac.addAction(cancel)
+        let alertController = createAlertController()
+        root.present(alertController, animated: true, completion: {
+            if self.config.message == nil { // if didn't configure, remove - have to add in first place for 1pt line to show above actions
+                alertController.message = nil
+            }
+        })
+    }
+    
+    // MARK: - Alert Controller
+    
+    private func createAlertController() -> UIAlertController {
+        let alertController = UIAlertController.init(title: config.title, message: config.message ?? "remove", preferredStyle: .alert)
+        addActionsToAlertController(alertController: alertController)
+        createImageViewForAlertControllerView(alertControllerView: alertController.view)
+        return alertController
+    }
+    
+    private func addActionsToAlertController(alertController: UIAlertController) {
+        let cancel = UIAlertAction.init(title: config.cancelTitle, style: .destructive)
+        alertController.addAction(cancel)
         let complete = UIAlertAction.init(title: config.completeTitle, style: .default) { _ in
             self.delegate?.completed()
         }
-        ac.addAction(complete)
-        
-        let imageView = UIImageView.init(image: self.image)
+        alertController.addAction(complete)
+    }
+    
+    // MARK: - Image View
+    
+    private func createImageViewForAlertControllerView(alertControllerView: UIView) {
+        let imageView = UIImageView.init(image: image)
         imageView.contentMode = config.imageViewContentMode
         imageView.clipsToBounds = true
-        ac.view.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        ac.view.addConstraints([NSLayoutConstraint.init(item: imageView,
-                                                        attribute: .top,
-                                                        relatedBy: .equal,
-                                                        toItem: ac.view,
-                                                        attribute: .top,
-                                                        multiplier: 1.0,
-                                                        constant: config.imageViewVerticalOffset),
-                                NSLayoutConstraint.init(item: imageView,
-                                                        attribute: .bottom,
-                                                        relatedBy: .equal,
-                                                        toItem: ac.view,
-                                                        attribute: .bottom,
-                                                        multiplier: 1.0,
-                                                        constant: -config.imageViewVerticalOffset - 44.0), // offset - bottom button height
-                                NSLayoutConstraint.init(item: imageView,
-                                                        attribute: .centerX,
-                                                        relatedBy: .equal,
-                                                        toItem: ac.view,
-                                                        attribute: .centerX,
-                                                        multiplier: 1.0,
-                                                        constant: 0)])
-        
+        alertControllerView.addSubview(imageView)
+        addConstraintsToImageView(imageView: imageView, alertControllerView: alertControllerView)
+    }
+    
+    private func addConstraintsToImageView(imageView: UIImageView, alertControllerView: UIView) {
+        addPositioningConstraintsToImageView(imageView: imageView, alertControllerView: alertControllerView)
+        addSizingConstraintsToImageView(imageView: imageView, alertControllerView: alertControllerView)
+    }
+    
+    private func addPositioningConstraintsToImageView(imageView: UIImageView, alertControllerView: UIView) {
+        alertControllerView.addConstraints([NSLayoutConstraint.init(item: imageView,
+                                                                     attribute: .top,
+                                                                     relatedBy: .equal,
+                                                                     toItem: alertControllerView,
+                                                                     attribute: .top,
+                                                                     multiplier: 1.0,
+                                                                     constant: config.imageViewVerticalOffset + additionalTopOffsetForImageView()),
+                                             NSLayoutConstraint.init(item: imageView,
+                                                                     attribute: .bottom,
+                                                                     relatedBy: .equal,
+                                                                     toItem: alertControllerView,
+                                                                     attribute: .bottom,
+                                                                     multiplier: 1.0,
+                                                                     constant: -config.imageViewVerticalOffset - 44.0),
+                                             NSLayoutConstraint.init(item: imageView,
+                                                                     attribute: .centerX,
+                                                                     relatedBy: .equal,
+                                                                     toItem: alertControllerView,
+                                                                     attribute: .centerX,
+                                                                     multiplier: 1.0,
+                                                                     constant: 0)])
+    }
+    
+    private func additionalTopOffsetForImageView() -> CGFloat {
+        // TODO: Improve, assumes message label is 1 line..
+        if config.title != nil && config.message != nil {
+            return 48.0
+        } else if config.title != nil || config.message != nil {
+            return 28.0
+        }
+        return 0.0
+    }
+    
+    private func addSizingConstraintsToImageView(imageView: UIImageView, alertControllerView: UIView) {
         if let imageViewHeight = config.imageViewHeight {
-            ac.view.addConstraint(NSLayoutConstraint.init(item: imageView,
-                                                          attribute: .height,
-                                                          relatedBy: .equal,
-                                                          toItem: nil,
-                                                          attribute: .height,
-                                                          multiplier: 1.0,
-                                                          constant: imageViewHeight))
+            alertControllerView.addConstraint(NSLayoutConstraint.init(item: imageView,
+                                                                       attribute: .height,
+                                                                       relatedBy: .equal,
+                                                                       toItem: nil,
+                                                                       attribute: .height,
+                                                                       multiplier: 1.0,
+                                                                       constant: imageViewHeight))
         }
         if let imageViewWidth = config.imageViewWidth {
-            ac.view.addConstraint(NSLayoutConstraint.init(item: imageView,
-                                                          attribute: .width,
-                                                          relatedBy: .equal,
-                                                          toItem: nil,
-                                                          attribute: .width,
-                                                          multiplier: 1.0,
-                                                          constant: imageViewWidth))
+            alertControllerView.addConstraint(NSLayoutConstraint.init(item: imageView,
+                                                                       attribute: .width,
+                                                                       relatedBy: .equal,
+                                                                       toItem: nil,
+                                                                       attribute: .width,
+                                                                       multiplier: 1.0,
+                                                                       constant: imageViewWidth))
         }
-        
-        root.present(ac, animated: true, completion: nil)
-        ac.message = nil // Remove uneeded message after present
     }
 }
-
