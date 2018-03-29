@@ -16,8 +16,8 @@ class ImageAlertPresenter: NSObject {
     
     // MARK: - Variables
     
-    weak public var image: UIImage!
-    weak public var delegate: ImageAlertPresenterDelegate?
+    public weak var image: UIImage!
+    public weak var delegate: ImageAlertPresenterDelegate?
     public var config: ImageAlertPresenterConfig!
     private weak var root: UIViewController!
     
