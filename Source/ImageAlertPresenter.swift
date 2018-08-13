@@ -48,16 +48,16 @@ class ImageAlertPresenter: NSObject {
     // MARK: - Alert Controller
     
     private func createAlertController() -> UIAlertController {
-        let alertController = UIAlertController.init(title: config.title, message: config.message ?? "remove", preferredStyle: .alert)
+        let alertController = UIAlertController(title: config.title, message: config.message ?? "remove", preferredStyle: .alert)
         addActionsToAlertController(alertController: alertController)
         createImageViewForAlertControllerView(alertControllerView: alertController.view)
         return alertController
     }
     
     private func addActionsToAlertController(alertController: UIAlertController) {
-        let cancel = UIAlertAction.init(title: config.cancelTitle, style: .destructive)
+        let cancel = UIAlertAction(title: config.cancelTitle, style: .destructive)
         alertController.addAction(cancel)
-        let complete = UIAlertAction.init(title: config.completeTitle, style: .default) { _ in
+        let complete = UIAlertAction(title: config.completeTitle, style: .default) { _ in
             self.delegate?.completed()
         }
         alertController.addAction(complete)
@@ -66,7 +66,7 @@ class ImageAlertPresenter: NSObject {
     // MARK: - Image View
     
     private func createImageViewForAlertControllerView(alertControllerView: UIView) {
-        let imageView = UIImageView.init(image: image)
+        let imageView = UIImageView(image: image)
         imageView.contentMode = config.imageViewContentMode
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -80,21 +80,21 @@ class ImageAlertPresenter: NSObject {
     }
     
     private func addPositioningConstraintsToImageView(imageView: UIImageView, alertControllerView: UIView) {
-        alertControllerView.addConstraints([NSLayoutConstraint.init(item: imageView,
+        alertControllerView.addConstraints([NSLayoutConstraint(item: imageView,
                                                                      attribute: .top,
                                                                      relatedBy: .equal,
                                                                      toItem: alertControllerView,
                                                                      attribute: .top,
                                                                      multiplier: 1.0,
                                                                      constant: config.imageViewVerticalOffset + additionalTopOffsetForImageView()),
-                                             NSLayoutConstraint.init(item: imageView,
+                                             NSLayoutConstraint(item: imageView,
                                                                      attribute: .bottom,
                                                                      relatedBy: .equal,
                                                                      toItem: alertControllerView,
                                                                      attribute: .bottom,
                                                                      multiplier: 1.0,
                                                                      constant: -config.imageViewVerticalOffset - 44.0),
-                                             NSLayoutConstraint.init(item: imageView,
+                                             NSLayoutConstraint(item: imageView,
                                                                      attribute: .centerX,
                                                                      relatedBy: .equal,
                                                                      toItem: alertControllerView,
@@ -115,7 +115,7 @@ class ImageAlertPresenter: NSObject {
     
     private func addSizingConstraintsToImageView(imageView: UIImageView, alertControllerView: UIView) {
         if let imageViewHeight = config.imageViewHeight {
-            alertControllerView.addConstraint(NSLayoutConstraint.init(item: imageView,
+            alertControllerView.addConstraint(NSLayoutConstraint(item: imageView,
                                                                        attribute: .height,
                                                                        relatedBy: .equal,
                                                                        toItem: nil,
@@ -124,7 +124,7 @@ class ImageAlertPresenter: NSObject {
                                                                        constant: imageViewHeight))
         }
         if let imageViewWidth = config.imageViewWidth {
-            alertControllerView.addConstraint(NSLayoutConstraint.init(item: imageView,
+            alertControllerView.addConstraint(NSLayoutConstraint(item: imageView,
                                                                        attribute: .width,
                                                                        relatedBy: .equal,
                                                                        toItem: nil,

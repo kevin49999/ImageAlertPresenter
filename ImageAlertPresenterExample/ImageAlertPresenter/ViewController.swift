@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     // MARK: - IBAction
     
     @IBAction func tapPresent(_ sender: UIButton) {
-        let imageAlert = ImageAlertPresenter.init(root: self, image: #imageLiteral(resourceName: "beach"), config: ImageAlertPresenterConfig(title: "Title", message: "Message"))
+        let imageAlert = ImageAlertPresenter(root: self, image: #imageLiteral(resourceName: "beach"), config: ImageAlertPresenterConfig(title: "Title", message: "Message"))
         imageAlert.delegate = self
         imageAlert.present()
     }
