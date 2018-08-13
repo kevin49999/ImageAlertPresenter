@@ -9,14 +9,14 @@
 import UIKit
 
 struct ImageAlertPresenterConfig {
-    var title: String?
-    var message: String?
-    var cancelTitle: String!
-    var completeTitle: String!
-    var imageViewHeight: CGFloat?
-    var imageViewWidth: CGFloat?
-    var imageViewVerticalOffset: CGFloat!
-    var imageViewContentMode: UIViewContentMode!
+    let title: String?
+    let message: String?
+    let cancelTitle: String
+    let completeTitle: String
+    let imageViewHeight: CGFloat?
+    let imageViewWidth: CGFloat?
+    let imageViewVerticalOffset: CGFloat
+    let imageViewContentMode: UIViewContentMode
     
     init(title: String? =                               nil,
          message: String? =                             nil,
